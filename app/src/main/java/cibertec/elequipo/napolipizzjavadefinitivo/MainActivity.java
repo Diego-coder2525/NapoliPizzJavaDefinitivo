@@ -2,6 +2,7 @@ package cibertec.elequipo.napolipizzjavadefinitivo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 final String email = emailEditText.getText().toString().trim();
                 final String password = passwordEditText.getText().toString().trim();
 
+                // Validar campos vacíos
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(MainActivity.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
                         new Response.Listener<String>() {
                             @Override
@@ -58,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                                     JSONArray jsonArray = new JSONArray(response);
                                     if (jsonArray.length() > 0) {
                                         // Credenciales válidas, iniciar la siguiente actividad
+                                        Toast.makeText(MainActivity.this, "Sesion correcta", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                                         startActivity(intent);
                                         finish();
@@ -82,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         Map<String, String> params = new HashMap<>();
                         params.put("CorreoElectronico", email);
                         params.put("Contraseña", password);
+
                         return params;
                     }
                 };
@@ -96,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 // Manejar el evento de "Registrate"
                 // Puedes implementar la lógica para dirigir al usuario al registro aquí
                 Toast.makeText(MainActivity.this, "Registrate", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                Intent intent = new Intent(MainActivity.this, RegistroActivity.class);
                 startActivity(intent);
                 finish();
             }
